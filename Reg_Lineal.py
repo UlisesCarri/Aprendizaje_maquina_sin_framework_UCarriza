@@ -57,8 +57,10 @@ def train(Data,θ,b,Y,PRI=False,ploter=False):   #Sacar los mejores valores de p
         θ,b = update(Data,θ,b,Y,0.01)
         epochs += 1
     if ploter:
-        print(epochs)
+        print("Number of Epochs: ",epochs)
         plt.plot(error)
+        plt.xlabel("Epoch")
+        plt.ylabel("Error")
         plt.show()
     return θ,b
 
@@ -70,6 +72,8 @@ def predict(θ,b,Data,Real,ploter=False):        #Hacer predicciones en base a l
         pre.append(HYP(Data[i],θ,b))
     if ploter:
         plt.plot(error)
+        plt.xlabel("Epoch")
+        plt.ylabel("Error")
         plt.show()
     print(f"Promedio Error test: {(sum(error) / len(error))*100}%")
     return pre
@@ -109,8 +113,11 @@ def main(Correlacion = False):
     
     # === Graficar prediccion contra real (Solo 40 muestras)===
     inst = range(40)
-    plt.scatter(inst, pred[:40])
-    plt.scatter(inst, Real[:40])
+    plt.scatter(inst, pred[:40],label="Predicción")
+    plt.scatter(inst, Real[:40],label="Real")
+    plt.xlabel("Sample")
+    plt.ylabel("Height")
+    plt.legend()
     plt.show()
     
 if __name__ == "__main__":
