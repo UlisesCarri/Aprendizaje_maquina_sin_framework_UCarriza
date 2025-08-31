@@ -1,5 +1,6 @@
 # Implementacion_tecnica_aprendizaje_maquina_sin_framework
 **Auto** : Ulises Orlando Carrizalez Lerín
+
 **Fecha**: 30/08/2025
 
 ## Informacion de Dataset
@@ -14,4 +15,5 @@ Posteriormente, se programó un modelo de regresión lineal que emplea ***Gradie
 
 ## Documentos
 Reg_Lineal.py : Implementación de modelo de regresión lineal exitoso
+
 Reg_Log.py    : Implementación de modelo de regresión logística fallido
