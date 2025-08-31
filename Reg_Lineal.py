@@ -1,8 +1,8 @@
 #============================
 #
-#  Author: Ulises Orlando Carrizalez Lerín
-#    Date: 30/08/2025
-#  Proyect: 
+#   Author: Ulises Orlando Carrizalez Lerín
+#     Date: 30/08/2025
+#  Proyect: Implementación de una técnica de aprendizaje máquina sin el uso de un framework
 #
 # Note: None
 #============================ 
@@ -17,15 +17,14 @@ import matplotlib.pyplot as plt
 ##############################
 # Functions
 ##############################
-
-def HYP(x,θ,b): #Hacer una hipotesis en base a los parametros
-  y   = 0
+def HYP(x,θ,b):                                 #Hacer una hipotesis en base a los parametros
+  y = 0
   for i in range(len(x)):
       y += θ[i]*x[i]
   y += b
   return y
 
-def MSE(Data,θ,b,Y,PRI=False): #Calcular el error con Mean squared error
+def MSE(Data,θ,b,Y,PRI=False):                  #Calcular el error con Mean squared error
   lost = 0
   for i in range(len(Data)):
     if PRI:print(Data[i])
@@ -33,20 +32,20 @@ def MSE(Data,θ,b,Y,PRI=False): #Calcular el error con Mean squared error
     if PRI:print( "hyp  %f  y %f " % (HYP(Data[i],θ,b),  Y[i]))
   return lost/len(Data)
 
-def update(Data,θ,b,Y,alfa): #Optimizar los parametros con GD
+def update(Data,θ,b,Y,alfa):                    #Optimizar los parametros con GD
   θnew = θ
   for j in range(len(θ)):
     grad = 0
     for i in range(len(Data)):
       grad += (HYP(Data[i],θ,b)-Y[i])*Data[i][j]
-    θnew[j] = θ[j] - alfa/len(Data) * grad
+    θnew[j] = θ[j] - (alfa/len(Data)) * grad
   grad = 0
   for i in range(len(Data)):
     grad += HYP(Data[i],θ,b)-Y[i]
-  bnew = b - alfa/len(Data) * grad
+  bnew = b - (alfa/len(Data)) * grad
   return θnew,bnew
 
-def train(Data,θ,b,Y,PRI=False,ploter=False): #Sacar los mejores valores de parametros para minimisar error
+def train(Data,θ,b,Y,PRI=False,ploter=False):   #Sacar los mejores valores de parametros para minimisar error
     error  = []
     epochs = 0
     while True:
@@ -63,7 +62,7 @@ def train(Data,θ,b,Y,PRI=False,ploter=False): #Sacar los mejores valores de par
         plt.show()
     return θ,b
 
-def predict(θ,b,Data,Real,ploter=False): #hacer predicciones en base a los parametros introduicidos
+def predict(θ,b,Data,Real,ploter=False):        #Hacer predicciones en base a los parametros introduicidos
     error= []
     pre = []
     for i in range(len(Data)):

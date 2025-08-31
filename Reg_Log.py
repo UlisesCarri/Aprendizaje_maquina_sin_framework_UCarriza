@@ -1,8 +1,8 @@
 #============================
 #
-#  Author: Ulises Orlando Carrizalez Lerín
-#    Date: 26/08/2025
-#  Proyect: 
+#   Author: Ulises Orlando Carrizalez Lerín
+#     Date: 26/08/2025
+#  Proyect: Implementación de una técnica de aprendizaje máquina sin el uso de un framework. 
 #
 # Note: Esta presentando el mismo error de clase, para reducir la candidad de error solo esta prediciendo 1,
 # de esta manera tiene un 50/50% de exito.
@@ -19,17 +19,17 @@ import matplotlib.pyplot as plt
 ##############################
 # Functions
 ##############################
-def hypothesis(θ, x):
+def hypothesis(θ, x): 		#Hacer una hipotesis en base a los parametros
 	acum = 0
 	for i in range(len(θ)):
-		acum = acum + θ[i]*x[i]
-	acum = acum*(-1)
-	acum = 1/(1+ math.exp (acum))
+		acum += + θ[i] * x[i]
+	acum = acum * (-1)
+	acum = 1/(1 + math.exp(acum))
 	return acum
 
-def show_errors(θ, Data, y):
-	acum = 0
-	error      = 0
+def BCE(θ, Data, y):			#Calcular el error con Binary Cross Entropy
+	acum  = 0
+	error = 0
 	for i in range(len(Data)):
 		hyp = hypothesis(θ,Data[i])
 		
@@ -42,25 +42,24 @@ def show_errors(θ, Data, y):
 		acum += error
 	return acum/len(Data)
 
-def update(θ, Data, y, alfa):
+def update(θ, Data, y, alfa):	#Optimizar los parametros con GD
 	temp = list(θ)
 	for j in range(len(θ)):
-		acum =0
+		acum = 0
 		for i in range(len(Data)):
 			error = hypothesis(θ,Data[i]) - y[i]
-			acum = acum + error*Data[i][j]  #Sumatory part of the Gradient Descent formula for linear Regression.
-		temp[j] = θ[j] - alfa*(1/len(Data))*acum  #Subtraction of original value with learning rate included.
+			acum = acum + error * Data[i][j] 
+		temp[j] = θ[j] - (alfa/len(Data)) * acum 
 	return temp
 
-def Log_Reg(θ,Data,y, alfa, epochs):
+def Log_Reg(θ,Data,y, alfa, epochs): #Optimizar los parametros para bajar el error
 	histo_error = []
 	for i in range(len(Data)):
-		Data[i]=  [1]+Data[i]
-	#Data = scaling(Data)
+		Data[i] = [1] + Data[i]
 	for _ in range(epochs):
 		oldparams = list(θ)
-		θ = update(θ, Data,y,alfa)	
-		error = show_errors(θ, Data, y) # only used to show errors, it is not used in calculation
+		θ         = update(θ, Data,y,alfa)	
+		error     = BCE(θ, Data, y)
 		histo_error.append(error)
 		if(oldparams == θ or error < 0.0001): break
 	print(θ)
@@ -69,14 +68,14 @@ def Log_Reg(θ,Data,y, alfa, epochs):
 	print(histo_error[len(histo_error)-1])
 	return θ
 
-def Predic(θ, test):
+def Predic(θ, test): 				#Usar los parametros actuales para calcular 
 	pre = []
 	for i in range(len(test)):
-		test[i]=  [1]+test[i]
+		test[i] = [1] + test[i]
 	for i in range(len(test)):
 		hyp = hypothesis(θ,test[i])
-		if hyp >= 0.5: pre.append(1)
-		elif hyp < 0.5: pre.append(0)
+		if hyp   >= 0.5 : pre.append(1)
+		elif hyp < 0.5  : pre.append(0)
 	return pre
 ##############################
 # Main
@@ -95,17 +94,15 @@ def main():
 
     # === Preparar los Datos ===
 	θ    = [0,0,0]   # bias + 2 features
-	y         = df_train["Sex"].tolist()
-	Data   = df_train[["Length","Diameter"]].values.tolist()
+	y    = df_train["Sex"].tolist()
+	Data = df_train[["Length","Diameter"]].values.tolist()
 
 	# === Entrenar el modelo ===
 	θ = Log_Reg(θ,Data,y, 0.01, 5000)
 
 	# === Hacer prediccion ===
-	test = df_test[["Length","Diameter"]].values.tolist()
+	test  = df_test[["Length","Diameter"]].values.tolist()
 	preds = Predic(θ,test)
-
-	df_test = df_test.copy()  # evitar el warning
 	df_test["Predicted"] = preds
 	print(df_test[["Sex","Predicted"]])
 
